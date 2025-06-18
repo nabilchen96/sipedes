@@ -113,7 +113,7 @@ class WilayahController extends Controller
 
         $search = $request->input('q');
 
-        $results = DB::table('wilayahs')->where('jenis', 'Kelurahan/Desa')->get();
+        $results = DB::table('wilayahs')->get();
 
         return response()->json($results);
     }

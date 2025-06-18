@@ -15,6 +15,10 @@ class PegawaiController extends Controller
 {
     public function detail($id)
     {
+        if(Auth::user()->role == 'Umum'){
+            $id = Auth::id();
+        }
+
         $profil = DB::table('profils')
             ->leftjoin('users', 'users.id', '=', 'profils.id_user')
             ->leftjoin('jabatans', 'jabatans.id', '=', 'profils.id_jabatan')

@@ -32,8 +32,13 @@ class ProfilController extends Controller
                     'wilayahs.nama as wilayah',
                     'jabatans.jabatan', 
                     'jabatans.sebagai'
-                )
-                ->get();
+                );
+
+        if(Auth::user()->role == 'Admin'){
+            $data = $data->get();
+        }else{
+            $data = $data->where('users.id', Auth::id())->get();
+        }
 
         return response()->json(['data' => $data]);
         // return response()->json(['data' => $user]);
@@ -41,6 +46,10 @@ class ProfilController extends Controller
 
     public function detail($id)
     {
+
+        if(Auth::user()->role == 'Umum'){
+            $id = Auth::id();
+        }
 
        $profil = DB::table('profils')
                 ->leftjoin('users', 'users.id', '=', 'profils.id_user')

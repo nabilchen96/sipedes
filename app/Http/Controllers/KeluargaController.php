@@ -21,6 +21,10 @@ class KeluargaController extends Controller
 
     public function data($id)
     {
+        if(Auth::user()->role == 'Umum'){
+            $id = Auth::id();
+        }
+
         $data = DB::table('keluargas')
             ->where('id_user', $id)
             ->get();
