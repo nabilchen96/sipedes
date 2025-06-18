@@ -18,8 +18,8 @@
   <link rel="stylesheet" href="login-form-02/css/style.css">
 
   <!-- Favicons -->
-  <link href="{{ url('pandu.jpeg') }}" rel="icon">
-  <link href="{{ url('pandu.jpeg') }}" rel="apple-touch-icon">
+  <!-- <link href="{{ url('pandu.jpeg') }}" rel="icon">
+  <link href="{{ url('pandu.jpeg') }}" rel="apple-touch-icon"> -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     @media (max-width: 768px) {
@@ -28,7 +28,7 @@
       }
     }
   </style>
-  <title>PANDU Pengelolaan Kepegawaian Terpadu</title>
+  <title>SIPEDES</title>
 </head>
 
 <body>

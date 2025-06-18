@@ -47,7 +47,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link has-arrow  active " href="./index.html">
+                <a class="nav-link has-arrow  active " href="{{ url('logout') }}">
                     <i class="bi bi-door-closed-fill nav-icon icon-xs me-2"></i> Log Out
                 </a>
             </li>

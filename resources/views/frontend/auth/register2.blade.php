@@ -22,8 +22,10 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <!-- Favicons -->
-    <link href="{{ url('ilanding/logo.png') }}" rel="icon">
-    <link href="{{ url('ilanding/logo.png') }}" rel="apple-touch-icon">
+    <!-- <link href="{{ url('pandu.jpeg') }}" rel="icon">
+    <link href="{{ url('pandu.jpeg') }}" rel="apple-touch-icon"> -->
+
+    <title>SIPEDES</title>
 
 
     <style>
@@ -39,7 +41,6 @@
         }
     </style>
 
-    <title>APLIKASI PENDATAAN NON ASN</title>
 </head>
 
 <body>

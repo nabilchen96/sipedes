@@ -18,10 +18,10 @@
   <link rel="stylesheet" href="login-form-02/css/style.css">
 
   <!-- Favicons -->
-  <link href="{{ url('pandu.jpeg') }}" rel="icon">
-  <link href="{{ url('pandu.jpeg') }}" rel="apple-touch-icon">
+  <!-- <link href="{{ url('pandu.jpeg') }}" rel="icon">
+  <link href="{{ url('pandu.jpeg') }}" rel="apple-touch-icon"> -->
 
-  <title>PANDU Pengelolaan Kepegawaian Terpadu</title>
+  <title>SIPEDES</title>
 </head>
 
 <body>
