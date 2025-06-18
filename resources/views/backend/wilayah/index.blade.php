@@ -1,6 +1,14 @@
 @extends('backend.app')
 @push('style')
-
+<link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+<style>
+    .ts-control{
+        border-radius: 0.375rem; 
+        line-height: 1.5 !important; 
+        font-size: 0.9375rem !important;
+        padding: 0.5rem 1rem !important;
+    }
+</style>
 @endpush
 @section('content')
     <div class="bg-primary pt-10 pb-21" style="
@@ -75,7 +83,7 @@
                                 </div>
                                 <div class="form-group mb-4">
                                     <label>Induk</label>
-                                    <select name="induk" class="form-select" id="induk">
+                                    <select name="induk" class="select-2" id="induk">
                                         <option value="">-- Induk --</option>
                                         @php 
                                             $w = DB::table('wilayahs')->whereNotIn('jenis', ['Kelurahan/Desa'])->get();
@@ -109,10 +117,15 @@
     </div>
 @endsection
 @push('script')
+
+<script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
     <script>
+        let select = ''
         document.addEventListener('DOMContentLoaded', function () {
             getData()
+            select = new TomSelect('#induk');
         })
+
 
         function getData() {
             $("#myTable").DataTable({
@@ -184,9 +197,9 @@
                 modal.find('#nama').val(cokData[0].nama);
                 modal.find('#jenis').val(cokData[0].jenis);
                 modal.find('#induk').val(cokData[0].induk);
-                modal.find('#latitude').val(cokData[0].induk);
-                modal.find('#longitude').val(cokData[0].induk);
-
+                modal.find('#latitude').val(cokData[0].latitude);
+                modal.find('#longitude').val(cokData[0].longitude);
+                select.setValue(cokData[0].induk);
                 
             }
         });

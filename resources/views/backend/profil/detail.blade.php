@@ -1,6 +1,14 @@
 @extends('backend.app')
 @push('style')
-
+<link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+<style>
+    .ts-control{
+        border-radius: 0.375rem; 
+        line-height: 1.5 !important; 
+        font-size: 0.9375rem !important;
+        padding: 0.5rem 1rem !important;
+    }
+</style>
 @endpush
 @section('content')
     <div class="bg-primary pt-10 pb-21" style="background-image: url('{{ asset('kampung.webp') }}');"></div>
@@ -85,7 +93,7 @@
                                 </div>
                                 <div class="col-lg-6 form-group mb-4">
                                     <label>Wilayah</label>
-                                    <select name="id_wilayah" id="id_wilayah" class="form-select">
+                                    <select name="id_wilayah" id="id_wilayah" class="my-select" required>
                                         @php 
                                             $wilayah = DB::table('wilayahs')->where('jenis', 'Kelurahan/Desa')->get();
                                         @endphp
@@ -138,6 +146,15 @@
     </div>
 @endsection
 @push('script')
+
+    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+    <script>
+        new TomSelect('.my-select', {
+            placeholder: 'Pilih salah satu...',
+            allowEmptyOption: false
+        });
+    </script>
+
     <script>
         form.onsubmit = (e) => {
 
