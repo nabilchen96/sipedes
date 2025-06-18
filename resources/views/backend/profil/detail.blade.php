@@ -113,16 +113,16 @@
                                 <div class="col-lg-6 form-group mb-4">
                                     <label>Pendidikan Terkahir</label>
                                     <select name="pendidikan_terakhir" id="pendidikan_terakhir" class="form-select">
-                                        <option {{ $profil->pendidikan_terakhir == 'SD' ?? 'selected' }}>SD</option>
-                                        <option {{ $profil->pendidikan_terakhir == 'SMP' ?? 'selected' }}>SMP</option>
-                                        <option {{ $profil->pendidikan_terakhir == 'SMA' ?? 'selected' }}>SMA</option>
-                                        <option {{ $profil->pendidikan_terakhir == 'D1' ?? 'selected' }}>D1</option>
-                                        <option {{ $profil->pendidikan_terakhir == 'D2' ?? 'selected' }}>D2</option>
-                                        <option {{ $profil->pendidikan_terakhir == 'D3' ?? 'selected' }}>D3</option>
-                                        <option {{ $profil->pendidikan_terakhir == 'D4' ?? 'selected' }}>D4</option>
-                                        <option {{ $profil->pendidikan_terakhir == 'S1' ?? 'selected' }}>S1</option>
-                                        <option {{ $profil->pendidikan_terakhir == 'S2' ?? 'selected' }}>S2</option>
-                                        <option {{ $profil->pendidikan_terakhir == 'S3' ?? 'selected' }}>S3</option>
+                                        <option {{ $profil->pendidikan_terakhir == 'SD' ? 'selected' : '-' }}>SD</option>
+                                        <option {{ $profil->pendidikan_terakhir == 'SMP' ? 'selected' : '-' }}>SMP</option>
+                                        <option {{ $profil->pendidikan_terakhir == 'SMA' ? 'selected' : '-' }}>SMA</option>
+                                        <option {{ $profil->pendidikan_terakhir == 'D1' ? 'selected' : '-' }}>D1</option>
+                                        <option {{ $profil->pendidikan_terakhir == 'D2' ? 'selected' : '-' }}>D2</option>
+                                        <option {{ $profil->pendidikan_terakhir == 'D3' ? 'selected' : '-' }}>D3</option>
+                                        <option {{ $profil->pendidikan_terakhir == 'D4' ? 'selected' : '-' }}>D4</option>
+                                        <option {{ $profil->pendidikan_terakhir == 'S1' ? 'selected' : '-' }}>S1</option>
+                                        <option {{ $profil->pendidikan_terakhir == 'S2' ? 'selected' : '-' }}>S2</option>
+                                        <option {{ $profil->pendidikan_terakhir == 'S3' ? 'selected' : '-' }}>S3</option>
                                     </select>
                                 </div>
                             </div>
