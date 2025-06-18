@@ -22,12 +22,6 @@
   <link href="{{ url('pandu.jpeg') }}" rel="apple-touch-icon">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
-    #map {
-      /* height: 600px; */
-      height: 100vh;
-      width: 100%;
-    }
-
     @media (max-width: 768px) {
       .bg {
         display: none;
@@ -41,28 +35,19 @@
 
 
   <div class="d-lg-flex half">
-    <div class="bg order-1 order-md-2">
-      <div id="map"></div>
-    </div>
+    <div class="bg order-1 order-md-2" style="background-image: url('{{ asset('kampung.webp') }}');"></div>
+
     <div class="contents order-2 order-md-1">
-      @php
-      $cek = DB::table('informasis')->where('status', 'Aktif')->first();
-      @endphp
-      @if ($cek)
-        <marquee behavior="scroll" direction="left" class="bg-info text-white pt-2 pb-1">
-          <h6>📢📢 {{ $cek->informasi }}</h6>
-        </marquee>
-      @endif
+
       <div class="container">
         <div class="row align-items-center justify-content-center" style="margin-top: -50px !important;">
           <div class="col-md-7">
-            <h3>Login to <br><strong><span class="text-danger">PANDU</span> Pengelolaan Kepegawaian Terpadu</strong></h3>
+            <h3>Login to <br> Sistem Informasi <strong><span class="text-danger">SIPEDES</span></strong></h3>
             <br>
             <form id="formLogin">
               <div class="form-group first">
-                <label>NIP atau Email</label>
-                <input type="text" class="form-control" placeholder="NIP atau Email" id="nip_email" name="nip_email"
-                  required>
+                <label>Email</label>
+                <input type="text" class="form-control" placeholder="Email" id="nip_email" name="nip_email" required>
               </div>
               <div class="form-group last mb-3">
                 <label for="password">Password</label>
@@ -102,31 +87,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.all.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script>
-    // Initialize the map
-    const map = L.map('map').setView([-2.548926, 118.014863], 5);
-    // Adjust default view coordinates
-
-    // Add OpenStreetMap tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
-
-    // Fetch district data from Laravel backend
-    fetch('/data-peta') // Adjust this endpoint as necessary
-      .then(response => response.json())
-      .then(data => {
-        data.forEach(district => {
-          const marker = L.marker([district.latitude, district.longitude]).addTo(map);
-          marker.bindPopup(`
-                                                <strong>${district.nama_skpd}</strong><br>
-                                                Total pegawai: ${district.total_employees}
-                                            `);
-        });
-      })
-      .catch(error => console.error('Error fetching district data:', error));
-  </script>
   <script>
     formLogin.onsubmit = (e) => {
 

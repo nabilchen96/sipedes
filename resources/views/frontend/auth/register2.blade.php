@@ -46,20 +46,15 @@
 
 
     <div class="d-lg-flex half" style="height: 125vh !important;">
-        <div class="bg order-1 order-md-2" style="background-image: url('natural.png');"></div>
+        <div class="bg order-1 order-md-2" style="background-image: url('kampung.webp');"></div>
         <div class="contents order-2 order-md-1">
-            @php
-            $cek = DB::table('informasis')->where('status', 'Aktif')->first();
-            @endphp
-            @if ($cek)
-                <marquee behavior="scroll" direction="left" class="bg-info text-white pt-2 pb-1">
-                <h6>📢📢 {{ $cek->informasi }}</h6>
-                </marquee>
-            @endif
             <div class="container">
-                <div class="row align-items-center justify-content-center" style="margin-top: -50px !important; height: 125vh !important;">
+                <div class="row align-items-center justify-content-center"
+                    style="margin-top: -50px !important; height: 125vh !important;">
                     <div class="col-md-9">
-                        <h3>Register to <br><strong>APLIKASI PENDATAAN MANDIRI  TENAGA NON ASN</strong></h3>
+                        <!-- <h3>Register to <br><strong>APLIKASI PENDATAAN MANDIRI  TENAGA NON ASN</strong></h3> -->
+                        <h3>Register to <br> Sistem Informasi <strong><span class="text-danger">SIPEDES</span></strong>
+                        </h3>
                         <br>
                         <form id="formRegister">
                             <div class="row">
@@ -86,15 +81,6 @@
                                             <option>Perempuan</option>
                                         </select>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Status Pegawai <sup class="text-danger">*</sup></label>
-                                        <select onchange="pilihStatus()" name="status_pegawai" class="form-control" id="status_pegawai" required>
-                                            <option value="">PILIH STATUS</option>
-                                            <option>PNS</option>
-                                            <option>P3K</option>
-                                            <option value="Honorer">Non ASN</option>
-                                        </select>
-                                    </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -118,25 +104,18 @@
                                             placeholder="No Whatsapp" readonly value="{{ session('user_otp')->no_wa }}"
                                             required>
                                     </div>
-                                    <div id="nip_form" class="form-group">
-                                        
-                                    </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label>Daerah <sup class="text-danger">*</sup></label>
-                                <select class="form-control" style="height: 58px !important; width: 100%;" name="district_id" id="select2-ajax"
-                                    required>
+                                <label>Wilayah<sup class="text-danger">*</sup></label>
+                                <select class="form-control" style="height: 58px !important; width: 100%;"
+                                    name="id_wilayah" id="select2-ajax" required>
                                     <option value="">Pilih Data</option>
                                 </select>
                             </div>
 
-                            <div class="form-group">
-                                <label>Alamat <sup class="text-danger">*</sup></label>
-                                <textarea name="alamat" class="form-control" id="alamat" cols="10" rows="10"
-                                    placeholder="Alamat" required></textarea>
-                            </div>
+                            <br>
                             <div class="d-grid">
                                 <button type="submit" id="btnLogin" class="btn btn-primary btn-lg btn-block">Sign
                                     Up</button>
@@ -165,88 +144,71 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script> -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
     <script>
-
-        function pilihStatus(){
-
-            var dok = document.getElementById('status_pegawai').value
-
-            console.log(dok);
-            
-
-            if(dok == 'Honorer'){
-
-                document.getElementById('nip_form').innerHTML = ``
-
-            }else{
-
-                document.getElementById('nip_form').innerHTML = `
-                    <label>NIP <sup class="text-danger">*</sup></label>
-                    <input type="number" name="nip" class="form-control" id="nip"
-                        placeholder="NIP" value=""
-                        required>
-                `
-            }
-
-        }
-
         formRegister.onsubmit = (e) => {
-
             e.preventDefault();
 
-            const formData = new FormData(formRegister);
+            // Ambil lokasi pengguna
+            navigator.geolocation.getCurrentPosition(function (position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
 
-            axios({
-                method: 'post',
-                url: '/registerProses',
-                data: formData,
-            })
-                .then(function (res) {
-                    //handle success
-                    if (res.data.responCode == 1) {
+                // Buat FormData dari form
+                const formData = new FormData(formRegister);
 
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil Mendaftar',
-                            text: 'Data anda berhasil diregistrasi, anda bisa menggunakan nip dan password untuk login',
-                            timer: 1000,
-                            showConfirmButton: false,
-                            // text: res.data.respon
-                        })
+                // Tambahkan koordinat ke FormData
+                formData.append('latitude', latitude);
+                formData.append('longitude', longitude);
 
-                        setTimeout(() => {
-                            window.location.href = '/dashboard';
-                        }, 1000);
-
-                    } else {
-
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Ada kesalahan',
-                            text: `${res.data.respon}`,
-                        })
-                    }
+                // Kirim data dengan Axios
+                axios({
+                    method: 'post',
+                    url: '/registerProses',
+                    data: formData,
                 })
-                .catch(function (res) {
-                    //handle error
-                    console.log(res);
-                }).then(function () {
-                    // always executed              
-                    document.getElementById(`btnLogin`).style.display = "block";
-                    document.getElementById(`btnLoginLoading`).style.display = "none";
+                    .then(function (res) {
+                        if (res.data.responCode == 1) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil Mendaftar',
+                                text: 'Data anda berhasil diregistrasi, anda bisa menggunakan nip dan password untuk login',
+                                timer: 1000,
+                                showConfirmButton: false
+                            })
 
+                            setTimeout(() => {
+                                window.location.href = '/dashboard';
+                            }, 1000);
+                        } else {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Ada kesalahan',
+                                text: `${res.data.respon}`,
+                            })
+                        }
+                    })
+                    .catch(function (res) {
+                        console.log(res);
+                    })
+                    .then(function () {
+                        document.getElementById(`btnLogin`).style.display = "block";
+                        document.getElementById(`btnLoginLoading`).style.display = "none";
+                    });
+
+            }, function (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Mengambil Lokasi',
+                    text: error.message
                 });
-
-        }
-
+            });
+        };
     </script>
     <script>
         $(document).ready(function () {
             $('#select2-ajax').select2({
                 ajax: {
-                    url: '/search-district',
+                    url: '/search-wilayah',
                     dataType: 'json',
                     delay: 250,
                     data: function (params) {
@@ -254,7 +216,7 @@
                     },
                     processResults: function (data) {
                         return {
-                            results: data.map(item => ({ id: item.id, text: item.name + ', ' + item.regensi_name + ', ' + item.provinsi_name }))
+                            results: data.map(item => ({ id: item.id, text: item.kode + ', ' + item.nama }))
                         };
                     }
                 },

@@ -204,8 +204,6 @@ class AuthController extends Controller
     public function registerProses(Request $request)
     {
 
-        // dd($request->all());
-
         $validator = Validator::make($request->all(), [
             'password' => 'required|min:8',
             'email' => 'unique:users',
@@ -213,9 +211,8 @@ class AuthController extends Controller
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
             'jenis_kelamin' => 'required',
-            'alamat' => 'required',
             'no_wa' => 'required',
-            'district_id' => 'required'
+            'id_wilayah' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -225,7 +222,7 @@ class AuthController extends Controller
         } else {
             $data = User::create([
                 'name' => $request->name,
-                'role' => 'Pegawai',
+                'role' => 'Umum',
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'no_wa' => $request->no_wa,
@@ -234,15 +231,14 @@ class AuthController extends Controller
 
             //ISI DATA KE PROFIL
             $data = Profil::create([
-                'nip' => $request->nip,
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'tempat_lahir' => $request->tempat_lahir,
                 'tanggal_lahir' => $request->tanggal_lahir,
-                'alamat' => $request->alamat,
                 'id_user' => $data->id,
-                'district_id' => $request->district_id,
-                'status_pegawai' => $request->status_pegawai, 
-                'nik' => $request->nik
+                'id_wilayah' => $request->id_wilayah,
+                'nik' => $request->nik,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude
             ]);
 
             $data = [

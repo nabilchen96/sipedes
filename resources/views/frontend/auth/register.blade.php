@@ -28,20 +28,13 @@
 
 
   <div class="d-lg-flex half">
-    <div class="bg order-1 order-md-2" style="background-image: url('natural.png');"></div>
+    <div class="bg order-1 order-md-2" style="background-image: url('kampung.webp');"></div>
     <div class="contents order-2 order-md-1">
-      @php
-      $cek = DB::table('informasis')->where('status', 'Aktif')->first();
-      @endphp
-        @if ($cek)
-        <marquee behavior="scroll" direction="left" class="bg-info text-white pt-2 pb-1">
-        <h6>📢📢 {{ $cek->informasi }}</h6>
-        </marquee>
-      @endif
       <div class="container">
         <div class="row align-items-center justify-content-center" style="margin-top: -50px !important;">
           <div class="col-md-7">
-            <h3>Register to <br><strong><span class="text-danger">PANDU</span> Pengelolaan Kepegawaian Terpadu</strong></h3>
+            <!-- <h3>Register to <br><strong><span class="text-danger">PANDU</span> Pengelolaan Kepegawaian Terpadu</strong></h3> -->
+             <h3>Register to <br> Sistem Informasi <strong><span class="text-danger">SIPEDES</span></strong></h3>
             <br>
             <form id="formRegister">
               <div class="form-group">

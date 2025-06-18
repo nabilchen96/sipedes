@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profil;
 use Illuminate\Http\Request;
 use DB;
-use App\Models\Profil;
 use App\Models\User;
 use Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,237 +17,94 @@ class ProfilController extends Controller
         return view('backend.profil.index');
     }
 
-    public function data()
-    {
+    public function data(){
 
-        $profil = DB::table('users')
-            ->leftJoin('profils', 'profils.id_user', '=', 'users.id')
-            ->leftJoin('districts', 'districts.id', '=', 'profils.district_id')
-            ->leftJoin('unit_kerjas', 'unit_kerjas.id', '=', 'profils.id_unit_kerja')
-            ->leftJoin('skpds', 'skpds.id', '=', 'unit_kerjas.id_skpd')
-            ->whereNotIn('users.role', ['Admin'])
-            ->select(
-                'users.name',
-                'users.email',
-                'users.no_wa',
-                'users.role',
-                'profils.*',
-                'districts.name as district',
-                'districts.latitude',
-                'districts.longitude',
-                'unit_kerjas.unit_kerja',
-                'skpds.nama_skpd'
-            );
+        $data = DB::table('profils')
+                ->leftjoin('users', 'users.id', '=', 'profils.id_user')
+                ->leftjoin('jabatans', 'jabatans.id', '=', 'profils.id_jabatan')
+                ->leftjoin('wilayahs', 'wilayahs.id', '=', 'profils.id_wilayah')
+                ->select(
+                    'users.name',
+                    'users.email',
+                    'users.no_wa',
+                    'profils.*',
+                    'wilayahs.kode', 
+                    'wilayahs.nama as wilayah',
+                    'jabatans.jabatan', 
+                    'jabatans.sebagai'
+                )
+                ->get();
 
-        if (
-            Auth::user()->role == 'Admin' ||
-            Auth::user()->role == 'Staff BKPSDM' ||
-            Auth::user()->role == 'Kabid BKPSDM' ||
-            Auth::user()->role == 'Sekretaris BKPSDM' ||
-            Auth::user()->role == 'Kepala BKPSDM' ||
-            Auth::user()->role == 'Inspektorat'
-        ) {
-
-            $profil = $profil->get();
-
-        } elseif (Auth::user()->role == 'SKPD') {
-
-            $profil = $profil->where('users.id_creator', Auth::id())->get();
-
-        } else {
-
-            $profil = $profil->where('users.id', Auth::id())->get();
-        }
-
-
-        return response()->json(['data' => $profil]);
+        return response()->json(['data' => $data]);
+        // return response()->json(['data' => $user]);
     }
 
-    public function store(Request $request)
+    public function detail($id)
     {
 
-        $validator = Validator::make($request->all(), [
-            'password' => 'required|min:8',
-            'email' => 'unique:users',
-            'no_wa' => 'unique:users',
-            'status_pegawai' => 'required'
-        ]);
-
-        if ($validator->fails()) {
-            $data = [
-                'responCode' => 0,
-                'respon' => $validator->errors()
-            ];
-        } else {
-            $data = Profil::create([
-                'name' => $request->name,
-                'role' => $request->role,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'no_wa' => $request->no_wa,
-                'status_pegawai' => $request->status_pegawai
-            ]);
-
-            $data = [
-                'responCode' => 1,
-                'respon' => 'Data Sukses Ditambah'
-            ];
-        }
-
-        return response()->json($data);
-    }
-
-    public function updateProfil(Request $request)
-    {
-
-        // dd($request->all());
-
-        $validator = Validator::make($request->all(), [
-            'id' => 'required',
-            'id_user' => 'required',
-            'name' => 'required',
-            'nik' => 'required',
-            // 'email'     => 'required|email|unique:users,email,' . $request->id_user,
-            'no_wa' => 'required',
-            'jenis_kelamin' => 'required',
-            'tempat_lahir' => 'required',
-            'tanggal_lahir' => 'required',
-            'agama' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-
-            $data = [
-                'responCode' => 0,
-                'respon' => $validator->errors()
-            ];
-
-            return back()->with('data', $data)->withInput();
-
-        } else {
-            $data = User::find($request->id_user);
-
-            $profil = Profil::find($request->id);
-            $profil->update([
-                'nik' => $request->nik,
-                'jenis_kelamin' => $request->jenis_kelamin,
-                'tempat_lahir' => $request->tempat_lahir,
-                'tanggal_lahir' => $request->tanggal_lahir,
-                'alamat' => $request->alamat,
-                'id_user' => $request->id_user,
-                'agama' => $request->agama,
-                'status_kawin' => $request->status_kawin,
-                'gelar_depan' => $request->gelar_depan,
-                'gelar_belakang' => $request->gelar_belakang,
-                'tingkat_pendidikan' => $request->tingkat_pendidikan,
-                'tahun_lulus' => $request->tahun_lulus,
-                'jurusan_pendidikan' => $request->jurusan_pendidikan,
-                'npwp' => $request->npwp,
-                'bpjs' => $request->bpjs
-
-                // 'district_id' => $request->district_id ?? $profil->district_id,
-                // 'status_pegawai' => $request->status_pegawai,
-                // 'pangkat' => $request->pangkat,
-                // 'jabatan' => $request->jabatan,
-                // 'id_unit_kerja' => $request->id_unit_kerja ?? $profil->id_unit_kerja
-            ]);
-
-            $data = [
-                'responCode' => 1,
-                'respon' => 'Data Berhasil Didaftarkan!'
-            ];
-        }
-
-        return back()->with('success', 'Data berhasil disimpan!');
-    }
-
-    public function updateProfilPegawai(Request $request)
-    {
-
-        // dd($request->all());
-
-        $validator = Validator::make($request->all(), [
-            'id' => 'required',
-            'id_user' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-
-            $data = [
-                'responCode' => 0,
-                'respon' => $validator->errors()
-            ];
-
-            return back()->with('data', $data)->withInput();
-
-        } else {
-            $data = User::find($request->id_user);
-
-            $profil = Profil::find($request->id);
-            $profil->update($request->all());
-
-        }
-
-        return back()->with('success', 'Data berhasil disimpan!');
-    }
-
-    public function detail()
-    {
-
-        $data = $profil = DB::table('users')
-            ->leftJoin('profils', 'profils.id_user', '=', 'users.id')
-            ->leftJoin('districts', 'districts.id', '=', 'profils.district_id')
-            ->leftJoin('unit_kerjas', 'unit_kerjas.id', '=', 'profils.id_unit_kerja')
-            ->leftJoin('skpds', 'skpds.id', '=', 'unit_kerjas.id_skpd')
-            ->whereNotIn('users.role', ['Admin'])
-            ->select(
-                'users.name',
-                'users.email',
-                'users.no_wa',
-                'users.role',
-                'profils.*',
-                'districts.name as district',
-                'districts.latitude',
-                'districts.longitude',
-                'unit_kerjas.unit_kerja',
-                'skpds.nama_skpd'
-            )->where('profils.id', Request('id'));
-
-        if (
-            Auth::user()->role == 'Admin' ||
-            Auth::user()->role == 'Staff BKPSDM' ||
-            Auth::user()->role == 'Kabid BKPSDM' ||
-            Auth::user()->role == 'Sekretaris BKPSDM' ||
-            Auth::user()->role == 'Kepala BKPSDM' ||
-            Auth::user()->role == 'Inspektorat'
-        ) {
-
-            $profil = $profil->first();
-
-        } elseif (Auth::user()->role == 'SKPD') {
-
-            $profil = $profil->where('users.id_creator', Auth::id())->first();
-
-        } else {
-
-            $profil = $profil->where('users.id', Auth::id())->first();
-        }
-
+       $profil = DB::table('profils')
+                ->leftjoin('users', 'users.id', '=', 'profils.id_user')
+                ->leftjoin('jabatans', 'jabatans.id', '=', 'profils.id_jabatan')
+                ->leftjoin('wilayahs', 'wilayahs.id', '=', 'profils.id_wilayah')
+                ->select(
+                    'users.name',
+                    'users.email',
+                    'users.no_wa',
+                    'profils.*',
+                )
+                ->where('profils.id_user', $id)
+                ->first();
 
         return view('backend.profil.detail', [
-            'profil' => $profil
+            'profil' => $profil, 
+            'id'    => $id
         ]);
     }
 
-    public function delete(Request $request)
-    {
+    public function update(Request $request){
 
-        $data = Profil::find($request->id)->delete();
+        $validator = Validator::make($request->all(), [
+            'id_user' => 'required',
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $request->id_user,
+            'no_wa' => 'required|unique:users,no_wa,' . $request->id_user, // Tambahkan pengecualian ID
+            'nik' => 'required|unique:profils,nik, '. $request->id,
+        ]);
 
-        $data = [
-            'responCode' => 1,
-            'respon' => 'Data Sukses Dihapus'
-        ];
+        // dd($request);
+
+        if ($validator->fails()) {
+            $data = [
+                'responCode' => 0,
+                'respon' => $validator->errors()
+            ];
+        } else {
+
+            $user = User::find($request->id_user);
+            $data = $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'no_wa' => $request->no_wa,
+                'password' => $request->password ? Hash::make($request->password) : $user->password
+            ]);
+
+            $profil = Profil::find($request->id);
+            $profil = $profil->update([
+                'nik' => $request->nik, 
+                'tanggal_lahir' => $request->tanggal_lahir, 
+                'tempat_lahir' => $request->tempat_lahir, 
+                'jenis_kelamin' => $request->jenis_kelamin, 
+                'id_wilayah' => $request->id_wilayah, 
+                'id_jabatan' => $request->id_jabatan, 
+                'tanggal_mulai_kerja' => $request->tanggal_mulai_kerja, 
+                'pendidikan_terakhir' => $request->pendidikan_terakhir
+            ]);
+
+            $data = [
+                'responCode' => 1,
+                'respon' => 'Data Sukses Disimpan'
+            ];
+        }
 
         return response()->json($data);
     }
