@@ -28,11 +28,12 @@
 
 
   <div class="d-lg-flex half">
-    <div class="bg order-1 order-md-2" style="background-image: url('natural.png');"></div>
-    <div class="contents order-2 order-md-1">
+    <div class="bg order-1 order-md-2" style="background-image: url('{{ asset('sipedes.jpeg') }}');"></div>
+
+    <div class="contents order-2 order-md-1" style="background: white;">
 
       <div class="container">
-        <div class="row align-items-center justify-content-center">
+        <div class="row align-items-center justify-content-center" style="background: white; margin-top: -50px !important;">
           <div class="col-md-7">
             <h3>Reset Password <br><strong><span class="text-danger">PANDU</span> Pengelolaan Kepegawaian Terpadu</strong></h3>
             <br>
@@ -40,18 +41,18 @@
               <div class="form-group mb-3">
                 <label>No Whatsapp</label>
                 <div class="input-group">
-                  <input type="number" class="form-control" id="no_wa" placeholder="No Whatsapp" name="no_wa">
+                  <input type="number" class="border form-control" id="no_wa" placeholder="No Whatsapp" name="no_wa">
                   <button class="input-group-text" id="btnSendOtp">🚀 Send</a>
                 </div>
                 <span style="font-size: 12px;" class="text-danger">*Jangan berikan kode OTP kepada orang lain</span>
               </div>
               <div class="form-group">
                 <label>Kode OTP</label>
-                <input type="text" name="otp" class="form-control" id="otp" placeholder="OTP">
+                <input type="text" name="otp" class="border form-control" id="otp" placeholder="OTP">
               </div>
               <div class="form-group">
                 <label>New Password</label>
-                <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+                <input type="password" name="password" class="border form-control" id="password" placeholder="Password">
               </div>
               <div class="d-grid">
                 <button type="submit" id="btnLogin" class="btn btn-primary btn-lg btn-block">Reset Password</button>

@@ -47,11 +47,11 @@
 
 
     <div class="d-lg-flex half" style="height: 125vh !important;">
-        <div class="bg order-1 order-md-2" style="background-image: url('kampung.webp');"></div>
-        <div class="contents order-2 order-md-1">
+        <div class="bg order-1 order-md-2" style="background-image: url('sipedes.jpeg');"></div>
+        <div class="contents order-2 order-md-1" style="background: white;">
             <div class="container">
                 <div class="row align-items-center justify-content-center"
-                    style="margin-top: -50px !important; height: 125vh !important;">
+                    style="background: white; margin-top: -50px !important; height: 125vh !important;">
                     <div class="col-md-9">
                         <!-- <h3>Register to <br><strong>APLIKASI PENDATAAN MANDIRI  TENAGA NON ASN</strong></h3> -->
                         <h3>Register to <br> Sistem Informasi <strong><span class="text-danger">SIPEDES</span></strong>
@@ -62,22 +62,22 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Nama <sup class="text-danger">*</sup></label>
-                                        <input type="text" name="name" class="form-control" id="name" placeholder="Nama"
+                                        <input type="text" name="name" class="border form-control" id="name" placeholder="Nama"
                                             required>
                                     </div>
                                     <div class="form-group">
                                         <label>Email <sup class="text-danger">*</sup></label>
-                                        <input type="email" name="email" class="form-control" id="email"
+                                        <input type="email" name="email" class="border form-control" id="email"
                                             placeholder="Email" required>
                                     </div>
                                     <div class="form-group">
                                         <label>Tempat Lahir <sup class="text-danger">*</sup></label>
-                                        <input type="text" name="tempat_lahir" class="form-control" id="tempat_lahir"
+                                        <input type="text" name="tempat_lahir" class="border form-control" id="tempat_lahir"
                                             placeholder="Tempat Lahir" required>
                                     </div>
                                     <div class="form-group">
                                         <label>Jenis Kelamin <sup class="text-danger">*</sup></label>
-                                        <select name="jenis_kelamin" class="form-control" id="jenis_kelamin" required>
+                                        <select name="jenis_kelamin" class="border form-control" id="jenis_kelamin" required>
                                             <option>Laki-laki</option>
                                             <option>Perempuan</option>
                                         </select>
@@ -86,22 +86,22 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>NIK<sup class="text-danger">*</sup></label>
-                                        <input type="number" name="nik" class="form-control" id="nik" placeholder="NIK"
+                                        <input type="number" name="nik" class="border form-control" id="nik" placeholder="NIK"
                                             required>
                                     </div>
                                     <div class="form-group">
                                         <label>Password <sup class="text-danger">*</sup></label>
-                                        <input type="password" name="password" class="form-control" id="password"
+                                        <input type="password" name="password" class="border form-control" id="password"
                                             placeholder="Password" required>
                                     </div>
                                     <div class="form-group">
                                         <label>Tanggal Lahir <sup class="text-danger">*</sup></label>
-                                        <input type="date" name="tanggal_lahir" class="form-control" id="tanggal_lahir"
+                                        <input type="date" name="tanggal_lahir" class="border form-control" id="tanggal_lahir"
                                             placeholder="Tanggal Lahir" required>
                                     </div>
                                     <div class="form-group">
                                         <label>No WA <sup class="text-danger">*</sup></label>
-                                        <input type="number" name="no_wa" class="form-control" id="no_wa"
+                                        <input type="number" name="no_wa" class="border form-control" id="no_wa"
                                             placeholder="No Whatsapp" readonly value="{{ session('user_otp')->no_wa }}"
                                             required>
                                     </div>
@@ -110,7 +110,7 @@
 
                             <div class="form-group">
                                 <label>Wilayah<sup class="text-danger">*</sup></label>
-                                <select class="form-control" style="height: 58px !important; width: 100%;"
+                                <select class="form-control border" style="height: 58px !important; width: 100%;"
                                     name="id_wilayah" id="select2-ajax" required>
                                     <option value="">Pilih Data</option>
                                 </select>

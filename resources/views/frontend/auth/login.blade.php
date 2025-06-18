@@ -35,23 +35,23 @@
 
 
   <div class="d-lg-flex half">
-    <div class="bg order-1 order-md-2" style="background-image: url('{{ asset('kampung.webp') }}');"></div>
+    <div class="bg order-1 order-md-2" style="background-image: url('{{ asset('sipedes.jpeg') }}');"></div>
 
-    <div class="contents order-2 order-md-1">
+    <div class="contents order-2 order-md-1" style="background: white;">
 
       <div class="container">
-        <div class="row align-items-center justify-content-center" style="margin-top: -50px !important;">
+        <div class="row align-items-center justify-content-center" style="background: white; margin-top: -50px !important;">
           <div class="col-md-7">
             <h3>Login to <br> Sistem Informasi <strong><span class="text-danger">SIPEDES</span></strong></h3>
             <br>
             <form id="formLogin">
               <div class="form-group first">
                 <label>Email</label>
-                <input type="text" class="form-control" placeholder="Email" id="nip_email" name="nip_email" required>
+                <input type="text" class="border form-control" placeholder="Email" id="nip_email" name="nip_email" required>
               </div>
               <div class="form-group last mb-3">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" name="password" placeholder="Your Password" id="password"
+                <input type="password" class="border form-control" name="password" placeholder="Your Password" id="password"
                   required>
               </div>
 

@@ -28,10 +28,12 @@
 
 
   <div class="d-lg-flex half">
-    <div class="bg order-1 order-md-2" style="background-image: url('kampung.webp');"></div>
-    <div class="contents order-2 order-md-1">
+    <div class="bg order-1 order-md-2" style="background-image: url('{{ asset('sipedes.jpeg') }}');"></div>
+
+    <div class="contents order-2 order-md-1" style="background: white;">
+
       <div class="container">
-        <div class="row align-items-center justify-content-center" style="margin-top: -50px !important;">
+        <div class="row align-items-center justify-content-center" style="background: white; margin-top: -50px !important;">
           <div class="col-md-7">
             <!-- <h3>Register to <br><strong><span class="text-danger">PANDU</span> Pengelolaan Kepegawaian Terpadu</strong></h3> -->
              <h3>Register to <br> Sistem Informasi <strong><span class="text-danger">SIPEDES</span></strong></h3>
@@ -40,13 +42,13 @@
               <div class="form-group">
                 <label>No Whatsapp</label>
                 <div class="input-group mb-3">
-                  <input type="number" class="form-control" id="no_wa" placeholder="No Whatsapp" name="no_wa">
+                  <input type="number" class="border form-control" id="no_wa" placeholder="No Whatsapp" name="no_wa">
                   <button class="input-group-text" id="btnSendOtp">🚀 Send</a>
                 </div>
               </div>
               <div class="form-group">
                 <label>Kode OTP</label>
-                <input type="text" name="otp" class="form-control" id="otp" placeholder="OTP">
+                <input type="text" name="otp" class="border form-control" id="otp" placeholder="OTP">
               </div>
               <div class="d-grid">
                 <button type="submit" id="btnLogin" class="btn btn-primary btn-lg btn-block">Sign Up</button>
