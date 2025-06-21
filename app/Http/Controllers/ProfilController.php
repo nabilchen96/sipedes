@@ -20,7 +20,7 @@ class ProfilController extends Controller
     public function data(){
 
         $data = DB::table('profils')
-                ->leftjoin('users', 'users.id', '=', 'profils.id_user')
+                ->join('users', 'users.id', '=', 'profils.id_user')
                 ->leftjoin('jabatans', 'jabatans.id', '=', 'profils.id_jabatan')
                 ->leftjoin('wilayahs', 'wilayahs.id', '=', 'profils.id_wilayah')
                 ->select(
