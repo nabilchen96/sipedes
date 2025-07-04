@@ -149,61 +149,70 @@
         formRegister.onsubmit = (e) => {
             e.preventDefault();
 
-            // Ambil lokasi pengguna
-            navigator.geolocation.getCurrentPosition(function (position) {
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
-
-                // Buat FormData dari form
-                const formData = new FormData(formRegister);
-
-                // Tambahkan koordinat ke FormData
-                formData.append('latitude', latitude);
-                formData.append('longitude', longitude);
-
-                // Kirim data dengan Axios
-                axios({
-                    method: 'post',
-                    url: '/registerProses',
-                    data: formData,
-                })
-                    .then(function (res) {
-                        if (res.data.responCode == 1) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil Mendaftar',
-                                text: 'Data anda berhasil diregistrasi, anda bisa menggunakan nip dan password untuk login',
-                                timer: 1000,
-                                showConfirmButton: false
-                            })
-
-                            setTimeout(() => {
-                                window.location.href = '/dashboard';
-                            }, 1000);
-                        } else {
-                            Swal.fire({
-                                icon: 'warning',
-                                title: 'Ada kesalahan',
-                                text: `${res.data.respon}`,
-                            })
-                        }
-                    })
-                    .catch(function (res) {
-                        console.log(res);
-                    })
-                    .then(function () {
-                        document.getElementById(`btnLogin`).style.display = "block";
-                        document.getElementById(`btnLoginLoading`).style.display = "none";
+            // Deteksi apakah geolocation tersedia dan origin aman
+            if (location.protocol === 'https:' && 'geolocation' in navigator) {
+                // Jika aman dan tersedia, ambil lokasi
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    submitForm(position.coords.latitude, position.coords.longitude);
+                }, function (error) {
+                    // Jika gagal ambil lokasi meskipun aman, tetap kirim tanpa koordinat
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Lokasi Tidak Tersedia',
+                        text: 'Pendaftaran tetap diproses tanpa lokasi.'
                     });
-
-            }, function (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal Mengambil Lokasi',
-                    text: error.message
+                    submitForm('', '');
                 });
-            });
+            } else {
+                // Jika tidak aman (HTTP) atau geolocation tidak tersedia
+                submitForm('', '');
+            }
         };
+
+        function submitForm(latitude, longitude) {
+            const formData = new FormData(formRegister);
+            formData.append('latitude', latitude);
+            formData.append('longitude', longitude);
+
+            // Tampilkan loading
+            document.getElementById(`btnLogin`).style.display = "none";
+            document.getElementById(`btnLoginLoading`).style.display = "block";
+
+            axios({
+                method: 'post',
+                url: '/registerProses',
+                data: formData,
+            })
+                .then(function (res) {
+                    if (res.data.responCode == 1) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil Mendaftar',
+                            text: 'Data anda berhasil diregistrasi, anda bisa menggunakan nip dan password untuk login',
+                            timer: 1000,
+                            showConfirmButton: false
+                        });
+
+                        setTimeout(() => {
+                            window.location.href = '/dashboard';
+                        }, 1000);
+                    } else {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Ada kesalahan',
+                            text: `${res.data.respon}`,
+                        });
+                    }
+                })
+                .catch(function (err) {
+                    console.log(err);
+                })
+                .finally(function () {
+                    document.getElementById(`btnLogin`).style.display = "block";
+                    document.getElementById(`btnLoginLoading`).style.display = "none";
+                });
+        }
+
     </script>
     <script>
         $(document).ready(function () {
