@@ -117,15 +117,16 @@ class AuthController extends Controller
         ]);
 
         $data = [
-            'Authorization' => 'wW8gdUm94JVYCQhJcEtF', // Ganti dengan token Anda
+            'Authorization' => 'Q6YBrZNnsuaMewvjVueW', // Ganti dengan token Anda
             'target' => $noWa, // Nomor tujuan
             'message' => 'Kode OTP Anda: *' . $otp . '*. Kode ini hanya dapat digunakan selama satu menit, dan jangan berikan kode ini kepada siapapun', // Isi pesan
+            'delay' => '5'
         ];
 
         // Mengirim request POST menggunakan Guzzle
         try {
             $response = Http::withHeaders([
-                'Authorization' => 'wW8gdUm94JVYCQhJcEtF',
+                'Authorization' => 'Q6YBrZNnsuaMewvjVueW',
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ])->asForm()->post('https://api.fonnte.com/send', $data);
 
@@ -280,15 +281,16 @@ class AuthController extends Controller
         ]);
 
         $data = [
-            'Authorization' => 'wW8gdUm94JVYCQhJcEtF', // Ganti dengan token Anda
+            'Authorization' => 'Q6YBrZNnsuaMewvjVueW', // Ganti dengan token Anda
             'target' => $noWa, // Nomor tujuan
             'message' => 'Kode OTP Anda: *' . $otp . '*. Kode ini hanya dapat digunakan selama satu menit, dan jangan berikan kode ini kepada siapapun', // Isi pesan
+            'delay' => '5'
         ];
 
         // Mengirim request POST menggunakan Guzzle
         try {
             $response = Http::withHeaders([
-                'Authorization' => 'wW8gdUm94JVYCQhJcEtF',
+                'Authorization' => 'Q6YBrZNnsuaMewvjVueW',
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ])->asForm()->post('https://api.fonnte.com/send', $data);
 
