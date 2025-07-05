@@ -40,6 +40,11 @@
                         <i class="bi bi-bank nav-icon icon-xs me-2"></i> Bank
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link has-arrow  active " href="{{ url('slide-show') }}">
+                        <i class="bi bi-image nav-icon icon-xs me-2"></i> Slide Show
+                    </a>
+                </li>
             @endif
             <li class="nav-item">
                 <a class="nav-link has-arrow  active " href="{{ url('profil') }}">

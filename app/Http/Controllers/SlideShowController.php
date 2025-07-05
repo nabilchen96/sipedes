@@ -3,21 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Bank;
+use App\Models\SlideShow;
 use DB;
 use Auth;
 use Illuminate\Support\Facades\Validator;
 
-class BankController extends Controller
+class SlideShowController extends Controller
 {
     public function index()
     {
-        return view('backend.bank.index');
+        return view('backend.slide_show.index');
     }
 
     public function data()
     {
-        $data = DB::table('banks')->get();
+        $data = DB::table('slide_shows')->get();
         return response()->json(['data' => $data]);
 
     }
@@ -25,7 +25,9 @@ class BankController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'bank' => 'required',
+            'gambar' => 'required|mimes:jpg,jpeg,png',
+            'judul' => 'required',
+            'status' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -34,8 +36,17 @@ class BankController extends Controller
                 'respon' => $validator->errors()
             ];
         } else {
-            $data = Bank::create([
-                'bank' => $request->bank,
+
+            //GAMBAR
+            if ($request->gambar) {
+                $gambar = time() . '.' . $request->gambar->extension();
+                $request->gambar->move(public_path('slide_show'), $gambar);
+            }
+
+            $data = SlideShow::create([
+                'gambar'    => $gambar, 
+                'judul'     => $request->judul,
+                'status'    => $request->status
             ]);
 
             $data = [
@@ -51,8 +62,9 @@ class BankController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'id' => 'required',
-            'bank' => 'required',
+            'gambar' => 'required|mimes:jpg,jpeg,png',
+            'judul' => 'required',
+            'status' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -62,9 +74,17 @@ class BankController extends Controller
             ];
         } else {
 
-            $user = Bank::find($request->id);
-            $data = $user->update([
-                'bank' => $request->bank,
+            //GAMBAR
+            if ($request->gambar) {
+                $gambar = time() . '.' . $request->gambar->extension();
+                $request->gambar->move(public_path('slide_show'), $gambar);
+            }
+
+            $data = SlideShow::find($request->id);
+            $data = $data->update([
+                'gambar'    => $gambar ?? $data->gambar, 
+                'judul'     => $request->judul,
+                'status'    => $request->status
             ]);
 
             $data = [
@@ -79,7 +99,7 @@ class BankController extends Controller
     public function delete(Request $request)
     {
 
-        $data = Bank::find($request->id)->delete();
+        $data = SlideShow::find($request->id)->delete();
 
         $data = [
             'responCode' => 1,

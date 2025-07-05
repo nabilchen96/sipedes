@@ -76,6 +76,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/update-bank', 'App\Http\Controllers\BankController@update');
     Route::post('/delete-bank', 'App\Http\Controllers\BankController@delete');
 
+    //SLIDE SHOW
+    Route::get('/slide-show', 'App\Http\Controllers\SlideShowController@index');
+    Route::get('/data-slide-show', 'App\Http\Controllers\SlideShowController@data');
+    Route::post('/store-slide-show', 'App\Http\Controllers\SlideShowController@store');
+    Route::post('/update-slide-show', 'App\Http\Controllers\SlideShowController@update');
+    Route::post('/delete-slide-show', 'App\Http\Controllers\SlideShowController@delete');
+
     //PROFIL
     Route::get('/profil', 'App\Http\Controllers\ProfilController@index');
     Route::get('/data-profil', 'App\Http\Controllers\ProfilController@data');

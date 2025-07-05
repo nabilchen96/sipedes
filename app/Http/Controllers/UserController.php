@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Profil;
+use App\Models\Pegawai;
 use Illuminate\Http\Request;
 use DB;
 use App\Models\User;
@@ -59,6 +60,16 @@ class UserController extends Controller
                 'no_wa' => $request->no_wa,
                 'status' => 'Aktif'
             ]);
+
+
+            if($request->role == 'Umum'){
+                Profil::create([
+                    'id_user' => $data->id
+                ]);
+                Pegawai::create([
+                    'id_user' => $data->id
+                ]);
+            }
 
             $data = [
                 'responCode' => 1,

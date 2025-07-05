@@ -16,7 +16,71 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 col-12 mt-6">
+            <div class="col-lg-12 mt-4">
+                @php
+                    
+                    $idUser = Auth::id();
+                    $showAlert = false;
+                    $output = ''; // Simpan isi alert untuk ditampilkan jika perlu
+
+                    // === PROFIL ===
+                    $data = DB::table('profils')->where('id_user', $idUser)->first();
+                    $fieldsToCheck = ['nik', 'tanggal_lahir', 'tempat_lahir', 'jenis_kelamin', 'id_wilayah', 'id_jabatan', 'tanggal_mulai_kerja', 'pendidikan_terakhir'];
+                    $emptyFields = [];
+
+                    if ($data) {
+                        foreach ($fieldsToCheck as $field) {
+                            if (is_null($data->$field) || $data->$field === '') {
+                                $emptyFields[] = $field;
+                            }
+                        }
+                        if (!empty($emptyFields)) {
+                            $showAlert = true;
+                            $fieldNames = array_map(function ($field) {
+                                $field = preg_replace('/^id_/', '', $field);
+                                return ucwords(str_replace('_', ' ', $field));
+                            }, $emptyFields);
+                            $output .= "<hr><b>a. Data Profil: </b>" . implode(', ', $fieldNames);
+                        }
+                    }
+
+                    // === PEGAWAI ===
+                    $data = DB::table('pegawais')->where('id_user', $idUser)->first();
+                    $fieldsToCheck = ['no_rekening', 'id_bank', 'nama_rekening', 'no_sk', 'siltap', 'potongan_bpjs', 'tunjangan', 'tmt_mulai_bertugas', 'tmt_berhenti_bertugas'];
+                    $emptyFields = [];
+
+                    if ($data) {
+                        foreach ($fieldsToCheck as $field) {
+                            if (is_null($data->$field) || $data->$field === '') {
+                                $emptyFields[] = $field;
+                            }
+                        }
+                        if (!empty($emptyFields)) {
+                            $showAlert = true;
+                            $fieldNames = array_map(function ($field) {
+                                $field = preg_replace('/^id_/', '', $field);
+                                return ucwords(str_replace('_', ' ', $field));
+                            }, $emptyFields);
+                            $output .= "<br><b>b. Data Pegawai: </b>" . implode(', ', $fieldNames);
+                        }
+                    }
+
+                    // === KELUARGA ===
+                    $data = DB::table('keluargas')->where('id_user', $idUser)->first();
+                    if (!$data) {
+                        $showAlert = true;
+                        $output .= "<br><b>c. Data Keluarga</b>";
+                    }
+                @endphp
+
+                @if(Auth::user()->role != 'Admin' && $showAlert)
+                    <div class="alert alert-danger" role="alert">
+                        Segera lengkapi data anda berikut ini:
+                        {!! $output !!}
+                    </div>
+                @endif
+            </div>
+            <div class="col-md-12 col-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">

@@ -113,7 +113,9 @@ class WilayahController extends Controller
 
         $search = $request->input('q');
 
-        $results = DB::table('wilayahs')->get();
+        $results = DB::table('wilayahs')
+                    ->where('nama', 'like', '%' . $search . '%')
+                    ->get();
 
         return response()->json($results);
     }

@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use App\Models\Otp;
 use App\Models\Profil;
+use App\Models\Pegawai;
 use Illuminate\Support\Facades\Hash;
 use GuzzleHttp\Client;
 use DB;
@@ -202,9 +203,8 @@ class AuthController extends Controller
         }
     }
 
-    public function registerProses(Request $request)
-    {
-
+    public function registerProses(Request $request){
+        
         $validator = Validator::make($request->all(), [
             'password' => 'required|min:8',
             'email' => 'unique:users',
@@ -217,11 +217,16 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
+            $data['respon'] = $validator->errors()->all();
+            return response()->json($data);
+        }
 
-            $data['respon'] = 'Semua data wajib diisi, silahkan ulangi!';
+        // Mulai transaksi
+        DB::beginTransaction();
 
-        } else {
-            $data = User::create([
+        try {
+            // Simpan ke tabel users
+            $user = User::create([
                 'name' => $request->name,
                 'role' => 'Umum',
                 'email' => $request->email,
@@ -230,30 +235,45 @@ class AuthController extends Controller
                 'status' => 'Aktif'
             ]);
 
-            //ISI DATA KE PROFIL
-            $data = Profil::create([
+            // Simpan ke tabel profils
+            $profil = Profil::create([
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'tempat_lahir' => $request->tempat_lahir,
                 'tanggal_lahir' => $request->tanggal_lahir,
-                'id_user' => $data->id,
+                'id_user' => $user->id,
                 'id_wilayah' => $request->id_wilayah,
                 'nik' => $request->nik,
                 'latitude' => $request->latitude,
                 'longitude' => $request->longitude
             ]);
 
+            // Simpan ke tabel pegawai
+            Pegawai::create([
+                'id_user' => $user->id
+            ]);
+
+            // Commit jika semua berhasil
+            DB::commit();
+
+            // Login dan hapus session OTP
+            Auth::attempt([
+                'email' => $request->email,
+                'password' => $request->password,
+            ]);
+            session()->forget('user_otp');
+
             $data = [
                 'responCode' => 1,
                 'respon' => 'Data Berhasil Didaftarkan!'
             ];
 
-            Auth::attempt([
-                'email' => $request->email,
-                'password' => $request->password,
-            ]);
+        } catch (\Exception $e) {
+            DB::rollBack(); // Batalkan jika ada error
 
-            //HAPUS SESSION
-            session()->forget('user_otp');
+            $data = [
+                'responCode' => 0,
+                'respon' => 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage()
+            ];
         }
 
         return response()->json($data);
