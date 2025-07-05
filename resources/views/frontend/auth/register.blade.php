@@ -109,7 +109,7 @@
           <div class="carousel-inner">
             
             @foreach($slide as $s)
-              <div class="carousel-item active">
+              <div class="carousel-item">
                 <img style="height: 500px;" src="{{ asset('slide_show') }}/{{ $s->gambar }}" class="d-block w-100" alt="...">
               </div>
             @endforeach
