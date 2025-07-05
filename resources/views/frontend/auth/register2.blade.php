@@ -125,8 +125,8 @@
           </div>
           <div class="carousel-inner">
             
-            @foreach($slide as $s)
-              <div class="carousel-item">
+            @foreach($slide as $k => $s)
+              <div class="carousel-item {{ $k+1 == 1 ? 'active' : '' }}">
                 <img style="height: 500px;" src="{{ asset('slide_show') }}/{{ $s->gambar }}" class="d-block w-100" alt="...">
               </div>
             @endforeach
